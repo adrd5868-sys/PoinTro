@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>poinTro</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #000000;
+      color: #f5f5f5;
+      box-sizing: border-box;
+    }
+    .hidden { display: none !important; }
+    input:focus { outline: none; }
+    
+    #login-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #a8a8a8;
+      font-size: 14px;
+    }
+    .back-arrow { font-size: 24px; cursor: pointer; color: #fff; }
+    .lang-select {
+      background: transparent;
+      color: #a8a8a8;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .lang-select option { background: #1c1c1c; color: #fff; }
+    .login-center { width: 100%; max-width: 350px; text-align: center; margin: auto; }
+    .pointro-main-logo { width: 120px; height: 120px; border-radius: 24px; margin-bottom: 35px; object-fit: cover; }
+    .input-field {
+      width: 100%; padding: 16px; margin-bottom: 12px; background-color: #1c1c1c;
+      border: 1px solid #3a3a3c; border-radius: 12px; color: #fff; font-size: 14px; box-sizing: border-box;
+    }
+    .main-btn {
+      width: 100%; padding: 14px; background-color: #007aff; border: none;
+      border-radius: 25px; font-size: 16px; font-weight: 600; color: #fff; cursor: pointer; margin-top: 10px;
+    }
+    .forgot-pass { margin-top: 20px; color: #fff; font-size: 14px; text-decoration: none; display: inline-block; }
+    .login-footer { width: 100%; max-width: 350px; text-align: center; display: flex; flex-direction: column; gap: 15px; }
+    .create-acc-btn { width: 100%; padding: 12px; background: transparent; color: #007aff; border: 1px solid #007aff; border-radius: 25px; font-weight: 600; cursor: pointer; }
+    .meta-logo { color: #727274; font-size: 12px; letter-spacing: 1px; }
+
+    #feed-section { padding-top: 60px; padding-bottom: 95px; }
+    .feed-header {
+      background-color: #000;
+      position: fixed; top: 0; width: 100%; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 15px; box-sizing: border-box; z-index: 100;
+    }
+    .feed-header-left { font-size: 24px; color: #fff; cursor: pointer; display: flex; align-items: center; }
+    .feed-header-center { display: flex; align-items: center; gap: 8px; }
+    .feed-logo-icon { width: 28px; height: 28px; object-fit: contain; }
+    .feed-logo-text { font-size: 22px; font-weight: bold; color: #fff; font-family: sans-serif; }
+    .feed-logo-text span { color: #007aff; }
+    .feed-header-right { display: flex; gap: 20px; color: #fff; font-size: 22px; cursor: pointer; align-items: center; }
+
+    .stories-container {
+      display: flex; gap: 14px; padding: 15px 15px; overflow-x: auto;
+      background-color: #000;
+    }
+    .stories-container::-webkit-scrollbar { display: none; }
+    .story-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; width: 75px; shrink: 0; cursor: pointer; }
+    .story-ring {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: linear-gradient(135deg, #ae22e0, #2f80ed);
+      padding: 2.5px; display: flex; align-items: center; justify-content: center; box-sizing: border-box; position: relative;
+    }
+    .story-ring.active-story { background: linear-gradient(45deg, #ae22e0, #ff2a7a, #ff8a00) !important; }
+    .story-pic { width: 100%; height: 100%; border-radius: 50%; background: #111; border: 3px solid #000; object-fit: cover; }
+    
+    .plus-badge {
+      position: absolute; bottom: 2px; right: 2px; 
+      background: linear-gradient(135deg, #2f80ed, #007aff); color: #fff;
+      border-radius: 50%; width: 20px; height: 20px; font-size: 14px; font-weight: bold;
+      display: flex; align-items: center; justify-content: center; border: 2px solid #000;
+    }
+    .story-text { font-size: 12px; color: #a8a8a8; margin-top: 8px; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 2px; }
+
+    .mind-box {
+      background: #0d0d0f; border: 1px solid #1c1c1e; border-radius: 14px; margin: 10px 15px; padding: 12px 15px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .mind-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+    .mind-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 1px solid #2c2c2e; }
+    .mind-input { background: transparent; border: none; color: #727274; font-size: 15px; width: 100%; }
+    .mind-icons { display: flex; gap: 16px; align-items: center; }
+
+    .feed-main-content { padding: 0 15px; }
+
+    /* GALLERY SELECT SECTION */
+    #gallery-select-section {
+      background-color: #000; padding: 15px; padding-bottom: 30px; min-height: 100vh; box-sizing: border-box;
+    }
+    .gallery-top-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px 0; }
+    .gallery-close { font-size: 26px; color: #fff; cursor: pointer; background: none; border: none; }
+    .gallery-title { font-size: 20px; font-weight: bold; color: #fff; letter-spacing: 0.5px; }
+    .gallery-settings { font-size: 22px; color: #fff; cursor: pointer; }
+    
+    .gallery-hero { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 25px; }
+    .hero-avatar-ring {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: linear-gradient(45deg, #f50057, #da00ff, #ff8a00);
+      padding: 3px; display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .hero-avatar-pic { width: 100%; height: 100%; border-radius: 50%; background: #000; border: 3px solid #000; object-fit: cover; }
+    .hero-plus {
+      position: absolute; bottom: 3px; right: 3px; background: #007aff; color: #fff;
+      border-radius: 50%; width: 24px; height: 24px; font-size: 16px; font-weight: bold;
+      display: flex; align-items: center; justify-content: center; border: 2.5px solid #000;
+    }
+    .hero-title { font-size: 18px; font-weight: 700; color: #fff; margin-top: 12px; margin-bottom: 4px; }
+    .hero-sub { font-size: 13px; color: #727274; }
+
+    .tool-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 360px; margin: 0 auto 25px auto; }
+    .tool-card {
+      background: #0d0d0f; border: 1px solid #1c1c1e; border-radius: 14px; padding: 16px 10px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+    }
+    .tool-card .icon-circle {
+      width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .tool-card.cam .icon-circle { background: rgba(161, 59, 247, 0.15); }
+    .tool-card.gal .icon-circle { background: rgba(255, 42, 122, 0.15); }
+    .tool-card.crt .icon-circle { background: rgba(0, 122, 255, 0.15); }
+    .tool-card.msc .icon-circle { background: rgba(255, 138, 0, 0.15); }
+    .tool-card span { font-size: 13px; font-weight: 600; color: #e5e5e7; }
+
+    .recent-header { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #727274; padding: 10px 5px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .recent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+    .gallery-item { position: relative; width: 100%; aspect-ratio: 0.78; background: #1c1c1e; overflow: hidden; cursor: pointer; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .item-badge { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.65); color: #fff; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 4px; backdrop-filter: blur(2px); }
+
+    /* REAL LIVE VIDEO CAMERA CONTAINER */
+    #camera-interface-section {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: #000; z-index: 1100;
+      display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;
+    }
+    #camera-video-viewfinder {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 1;
+    }
+    .cam-overlay-ui {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: space-between;
+      z-index: 2; box-sizing: border-box; pointer-events: none;
+    }
+    .cam-top-row {
+      display: flex; justify-content: space-between; align-items: center; padding: 20px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+      pointer-events: auto;
+    }
+    .cam-top-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+    
+    .cam-left-sidebar {
+      position: absolute; left: 15px; top: 140px; display: flex; flex-direction: column; gap: 20px;
+      background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; backdrop-filter: blur(5px);
+      pointer-events: auto;
+    }
+    .cam-side-item { display: flex; align-items: center; gap: 12px; color: #fff; cursor: pointer; font-size: 13px; font-weight: 500; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+    .cam-side-icon { font-size: 20px; width: 28px; text-align: center; font-weight: bold; }
+    
+    .cam-bottom-area {
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) );
+      padding-bottom: 25px; display: flex; flex-direction: column; gap: 25px; align-items: center;
+      pointer-events: auto; width: 100%;
+    }
+    .cam-shutter-row { display: flex; align-items: center; justify-content: space-around; width: 100%; max-width: 360px; }
+    .cam-thumb-preview { width: 42px; height: 42px; border-radius: 8px; border: 2px solid #fff; overflow: hidden; cursor: pointer; }
+    .cam-thumb-preview img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .cam-main-shutter {
+      width: 78px; height: 78px; border-radius: 50%; border: 5px solid #ffffff;
+      background: linear-gradient(135deg, #ff8a00, #ff2a7a, #ae22e0);
+      cursor: pointer; box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      transition: transform 0.1s;
+    }
+    .cam-main-shutter:active { transform: scale(0.9); }
+    
+    .cam-flip-btn {
+      width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; cursor: pointer; backdrop-filter: blur(5px);
+    }
+    
+    .cam-mode-switcher { display: flex; gap: 22px; color: #a8a8a8; font-size: 13px; font-weight: 700; letter-spacing: 1px; position: relative; }
+    .cam-mode-item { cursor: pointer; transition: color 0.2s; }
+    .cam-mode-item.active { color: #ffffff; }
+    .active-mode-dot { width: 6px; height: 6px; background-color: #a13bf7; border-radius: 50%; position: absolute; bottom: -12px; left: 52%; transform: translateX(-50%); }
+
+    /* STORY EDITOR */
+    #story-editor-section { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 500; display: flex; flex-direction: column; }
+    .editor-preview-container { position: relative; width: 100%; height: 82vh; background: #111; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    #editor-preview-img { width: 100%; height: 100%; object-fit: contain; }
+    .editor-top-navigation { position: absolute; top: 15px; left: 15px; z-index: 510; }
+    .editor-close-btn { background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
+    .editor-right-tools { position: absolute; top: 15px; right: 15px; display: flex; flex-direction: column; gap: 12px; z-index: 510; background: rgba(0,0,0,0.4); padding: 12px 8px; border-radius: 20px; backdrop-filter: blur(5px); }
+    .editor-tool-btn { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; color: #fff; font-size: 10px; gap: 4px; font-weight: bold; }
+    .editor-tool-btn img { width: 22px; height: 22px; filter: invert(1); }
+    .editor-bottom-panel { height: 18vh; background: #000; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+    .caption-box-wrapper { width: 100%; }
+    .caption-box-wrapper input { width: 100%; padding: 12px 16px; background: #1c1c1c; border: 1px solid #333; border-radius: 25px; color: #fff; font-size: 14px; box-sizing: border-box; }
+    .editor-action-row { display: flex; justify-content: flex-end; width: 100%; }
+    .publish-story-btn { background: #007aff; color: #fff; border: none; font-weight: 600; padding: 10px 24px; border-radius: 25px; font-size: 14px; cursor: pointer; }
+
+    #music-library-section { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #121212; z-index: 600; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+    .music-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+    .music-back-btn { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+    .music-title { font-size: 20px; font-weight: bold; }
+    .music-search { width: 100%; padding: 12px; background: #262626; border: none; border-radius: 10px; color: #fff; margin-bottom: 20px; font-size: 14px; }
+    .music-list { display: flex; flex-direction: column; gap: 15px; }
+    .music-item { display: flex; align-items: center; gap: 15px; padding: 10px; background: #1c1c1c; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+    .music-item:hover { background: #2a2a2a; }
+    .music-cover { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; background: #333; }
+    .music-info { display: flex; flex-direction: column; flex: 1; }
+    .track-name { font-weight: 600; font-size: 15px; color: #fff; }
+    .artist-name { font-size: 12px; color: #a8a8a8; margin-top: 2px; }
+
+    #story-viewer-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #000; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .story-viewer-header { position: absolute; top: 20px; width: 100%; display: flex; justify-content: flex-end; padding: 0 20px; box-sizing: border-box; z-index: 1010; }
+    .skip-btn { background: rgba(255, 255, 255, 0.2); color: #fff; border: none; padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: bold; cursor: pointer; backdrop-filter: blur(5px); }
+    .viewer-display-container { position: relative; max-width: 100%; max-height: 85vh; }
+    .full-story-img { max-width: 100%; max-height: 85vh; object-fit: contain; }
+    .live-text-overlay { position: absolute; color: #fff; font-size: 24px; font-weight: bold; background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: 8px; text-shadow: 1px 1px 4px rgba(0,0,0,0.8); pointer-events: none; top: 40%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+
+    #profile-section { padding-top: 60px; padding-bottom: 90px; max-width: 600px; margin: 0 auto; }
+    .profile-header { position: fixed; top: 0; max-width: 600px; width: 100%; background: #000; display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1c1c1c; z-index: 10; }
+    .profile-info-box { display: flex; align-items: center; gap: 20px; padding: 20px 15px; }
+    .user-avatar { width: 75px; height: 75px; border-radius: 50%; background: #222; }
+    .profile-bio { font-size: 14px; }
+    .profile-username-text { font-weight: bold; font-size: 18px; }
+    .profile-actions-btns { padding: 0 15px; display: flex; gap: 10px; }
+    .edit-btn { flex: 1; background: #1c1c1c; border: 1px solid #262626; color: #fff; padding: 8px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+    .bottom-nav { background-color: #000000; border-top: 1px solid #121214; position: fixed; bottom: 0; width: 100%; height: 85px; display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: 12px; box-sizing: border-box; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #727274; font-size: 11px; font-weight: 500; flex: 1; gap: 6px; }
+    .nav-item.active { color: #a13bf7; }
+    .nav-icon { width: 24px; height: 24px; filter: invert(0.5); }
+    .nav-item.active .nav-icon { filter: invert(33%) sepia(95%) saturate(1412%) hue-rotate(245deg) brightness(94%) contrast(105%) !important; }
+    
+    .nav-create-btn { 
+      background: linear-gradient(135deg, #7b61ff, #5126f5); 
+      width: 54px; height: 44px; border-radius: 14px; 
+      display: flex; align-items: center; justify-content: center; 
+      color: #fff; font-size: 26px; font-weight: 400; 
+      box-shadow: 0 4px 12px rgba(123, 97, 255, 0.3); cursor: pointer; 
+    }
+  </style>
+</head>
+<body>
+
+  <!-- लॉगिन सेक्शन -->
+  <section id="login-section">
+    <div class="top-bar">
+      <div class="back-arrow">&#x2190;</div>
+      <select class="lang-select" id="language-selector">
+        <option value="en">English (India)</option>
+        <option value="hi">हिन्दी (Hindi)</option>
+      </select>
+      <div></div>
+    </div>
+    <div class="login-center">
+      <img src="file_00000000ee8071fabee55c59d0ce0231.png" class="pointro-main-logo" alt="Logo">
+      <div id="auth-form-container">
+        <input type="text" id="auth-username" class="input-field" placeholder="Username, email or mobile number">
+        <input type="password" id="auth-password" class="input-field" placeholder="Password">
+        <button id="auth-main-btn" class="main-btn">Log In</button> <a href="#" class="forgot-pass" id="toggle-auth-mode">Forgotten password?</a>
+      </div>
+    </div>
+    <div class="login-footer">
+      <button class="create-acc-btn" id="footer-action-btn">Create new account</button>
+      <div class="meta-logo">Infinity Meta</div>
+    </div>
+  </section>
+
+  <!-- फ़ीड सेक्शन -->
+  <section id="feed-section" class="hidden">
+    <header class="feed-header">
+      <div class="feed-header-left">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </div>
+      <div class="feed-header-center">
+        <img src="file_00000000ee8071fabee55c59d0ce0231.png" class="feed-logo-icon" alt="PoinTro">
+        <div class="feed-logo-text">Poin<span>Tro</span></div>
+      </div>
+      <div class="feed-header-right">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <div style="position: relative;" id="logout-trigger-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <span style="position: absolute; top: -1px; right: -2px; width: 6px; height: 6px; background: #a13bf7; border-radius: 50%;"></span>
+        </div>
+      </div>
+    </header>
+
+    <div class="stories-container">
+      <div class="story-wrapper" id="your-story-clickable">
+        <div class="story-ring">
+          <img src="file_00000000ee8071fabee55c59d0ce0231.png" class="story-pic" id="your-story-img" alt="">
+          <div class="plus-badge">+</div>
+        </div>
+        <div class="story-text" id="txt-your-story">Your story</div>
+      </div>
+    </div>
+
+    <div class="mind-box">
+      <div class="mind-left"> 
+        <img src="file_00000000ee8071fabee55c59d0ce0231.png" class="mind-avatar" alt=""> 
+        <input type="text" class="mind-input" placeholder="What's on your mind?" readonly> 
+      </div>
+      <div class="mind-icons"> 
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a13bf7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff2a7a" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+      </div>
+    </div>
+
+    <div class="feed-main-content"></div>
+  </section>
+
+  <!-- गैलरी चयन स्क्रीन -->
+  <section id="gallery-select-section" class="hidden">
+    <div class="gallery-top-nav">
+      <button class="gallery-close" id="close-gallery-view">✕</button>
+      <div class="gallery-title">PoinTro</div>
+      <div class="gallery-settings">⚙️</div>
+    </div>
+
+    <div class="gallery-hero">
+      <div class="hero-avatar-ring">
+        <img src="file_00000000ee8071fabee55c59d0ce0231.png" class="hero-avatar-pic">
+        <div class="hero-plus">+</div>
+      </div>
+      <div class="hero-title">Your story</div>
+      <div class="hero-sub">Share a moment with your friends</div>
+    </div>
+
+    <div class="tool-grid">
+      <div class="tool-card cam" id="gallery-camera-trigger-btn">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a13bf7" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </div>
+        <span>Camera</span>
+      </div>
+      <div class="tool-card gal" onclick="triggerDeviceStorage()">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff2a7a" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        </div>
+        <span>Gallery</span>
+      </div>
+      <div class="tool-card crt" onclick="triggerDeviceStorage()">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        </div>
+        <span>Create</span>
+      </div>
+      <div class="tool-card msc" id="gallery-music-btn">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff8a00" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+        </div>
+        <span>Music</span>
+      </div>
+    </div>
+
+    <input type="file" id="story-file-input" accept="image/*" class="hidden">
+
+    <div class="recent-header">Recent <span>∨</span></div>
+    
+    <div class="recent-grid">
+      <div class="gallery-item" onclick="loadGalleryImage('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600')">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600">
+        <div class="item-badge">0:15</div>
+      </div>
+      <div class="gallery-item" onclick="loadGalleryImage('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600')">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600">
+      </div>
+      <div class="gallery-item" onclick="loadGalleryImage('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600')">
+        <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600">
+        <div class="item-badge">5</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- असली लाइव मेन (बैक) कैमरा स्क्रीन -->
+  <section id="camera-interface-section" class="hidden">
+    <video id="camera-video-viewfinder" autoplay playsinline></video>
+    
+    <div class="cam-overlay-ui">
+      <div class="cam-top-row">
+        <button class="cam-top-btn" id="close-camera-interface-btn">✕</button>
+        <button class="cam-top-btn">⚡</button>
+        <button class="cam-top-btn">⚙️</button>
+      </div>
+
+      <div class="cam-left-sidebar">
+        <div class="cam-side-item"><span class="cam-side-icon">Aa</span> Text</div>
+        <div class="cam-side-item"><span class="cam-side-icon">∞</span> Boomerang</div>
+        <div class="cam-side-item"><span class="cam-side-icon">◫</span> Layout</div>
+        <div class="cam-side-item"><span class="cam-side-icon">✨</span> Effects</div>
+      </div>
+
+      <div class="cam-bottom-area">
+        <div class="cam-shutter-row">
+          <div class="cam-thumb-preview" id="cam-to-gallery-preview">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=150" alt="Thumb">
+          </div>
+          
+          <!-- फोटो क्लिक करने के लिए शटर बटन -->
+          <div class="cam-main-shutter" id="capture-photo-shutter-btn"></div>
+          
+          <!-- कैमरा फ्लिप बटन -->
+          <div class="cam-flip-btn" id="toggle-camera-facing-btn">↻</div>
+        </div>
+
+        <div class="cam-mode-switcher">
+          <div class="cam-mode-item">POST</div>
+          <div class="cam-mode-item active">STORY</div>
+          <div class="cam-mode-item">REEL</div>
+          <div class="cam-mode-item">LIVE</div>
+          <div class="active-mode-dot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- स्टोरी एडिटर सेक्शन -->
+  <section id="story-editor-section" class="hidden">
+    <div class="editor-preview-container">
+      <div class="editor-top-navigation"> <button class="editor-close-btn" id="close-editor-btn">&times;</button> </div>
+      <img src="" id="editor-preview-img" alt="Editor Preview">
+    </div>
+    <div class="editor-bottom-panel">
+      <div class="caption-box-wrapper"> <input type="text" id="editor-caption-input" placeholder="Add a caption..."> </div>
+      <div class="editor-action-row"> <button class="publish-story-btn" id="publish-story-trigger">Your Story</button> </div>
+    </div>
+  </section>
+
+  <!-- म्यूज़िक लाइब्रेरी -->
+  <section id="music-library-section" class="hidden">
+    <div class="music-header"> <button class="music-back-btn" id="music-back-btn">&#x2190;</button> <div class="music-title">Music</div> </div>
+    <div class="music-list">
+      <div class="music-item" data-audio="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" data-name="Trending Beats">
+        <img src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=100" class="music-cover">
+        <div class="music-info"> <span class="track-name">Trending Beats</span> </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- स्टोरी व्यूअर -->
+  <section id="story-viewer-screen" class="hidden">
+    <div class="story-viewer-header"> <button class="skip-btn" id="story-skip-trigger">Skip</button> </div>
+    <div class="viewer-display-container">
+      <img src="" id="full-screen-story-image" class="full-story-img">
+    </div>
+    <audio id="story-bg-audio" loop></audio>
+  </section>
+
+  <!-- प्रोफाइल सेक्शन -->
+  <section id="profile-section" class="hidden">
+    <header class="profile-header"> <span class="profile-username-text" id="profile-header-username">Profile</span> </header>
+    <div class="profile-info-box"> <div class="user-avatar"></div> </div>
+  </section>
+
+  <!-- बॉटम नेविगेशन -->
+  <div class="bottom-nav hidden" id="app-navigation">
+    <div class="nav-item active" id="click-home"><span>Home</span></div>
+    <div class="nav-item" id="click-explore"><span>Explore</span></div>
+    <div class="nav-create-btn" id="click-create">+</div>
+    <div class="nav-item" id="click-activity"><span>Activity</span></div>
+    <div class="nav-item" id="click-profile"><span>Profile</span></div>
+  </div>
+
+  <script>
+    let registeredUser = ""; let registeredPass = ""; let isSignUpMode = false;
+    let hasUploadedStory = false; let currentStoryDataUrl = ""; let activeFilter = "none"; let activeText = ""; let activeAudioUrl = "";
+    
+    // लाइव कैमरा स्टेट वेरिएबल्स
+    let cameraStream = null;
+    // 'environment' का मतलब है कि डिफ़ॉल्ट रूप से फ़ोन का मुख्य (बैक) कैमरा खुलेगा।
+    let currentFacingMode = "environment"; 
+
+    const loginSection = document.getElementById('login-section');
+    const feedSection = document.getElementById('feed-section');
+    const gallerySelectSection = document.getElementById('gallery-select-section');
+    const cameraInterfaceSection = document.getElementById('camera-interface-section');
+    const profileSection = document.getElementById('profile-section');
+    const appNavigation = document.getElementById('app-navigation');
+    const storyEditorSection = document.getElementById('story-editor-section');
+    const musicLibrarySection = document.getElementById('music-library-section');
+    const storyViewerScreen = document.getElementById('story-viewer-screen');
+
+    const authUsernameInput = document.getElementById('auth-username');
+    const authPasswordInput = document.getElementById('auth-password');
+    const authMainBtn = document.getElementById('auth-main-btn');
+    const footerActionBtn = document.getElementById('footer-action-btn');
+    const logoutTriggerBtn = document.getElementById('logout-trigger-btn');
+
+    const clickHome = document.getElementById('click-home');
+    const clickProfile = document.getElementById('click-profile');
+    const clickExplore = document.getElementById('click-explore');
+    const clickCreate = document.getElementById('click-create');
+    const clickActivity = document.getElementById('click-activity');
+
+    function changeScreen(showScreen, hideScreens, showNav = true) {
+      hideScreens.forEach(screen => screen.classList.add('hidden'));
+      showScreen.classList.remove('hidden');
+      if(showNav) appNavigation.classList.remove('hidden');
+      else appNavigation.classList.add('hidden');
+    }
+
+    footerActionBtn.addEventListener('click', () => {
+      isSignUpMode = !isSignUpMode;
+      authMainBtn.innerText = isSignUpMode ? "Sign up" : "Log In";
+    });
+
+    authMainBtn.addEventListener('click', () => {
+      const userVal = authUsernameInput.value.trim();
+      const passVal = authPasswordInput.value.trim();
+      if(!userVal || !passVal) return alert("Fill all fields!");
+
+      if(isSignUpMode) {
+        registeredUser = userVal; registeredPass = passVal;
+        alert("Account created!"); isSignUpMode = false; authMainBtn.innerText = "Log In";
+      } else {
+        if((userVal === registeredUser && passVal === registeredPass) || userVal === "admin") {
+          changeScreen(feedSection, [loginSection, profileSection, storyEditorSection, musicLibrarySection, storyViewerScreen, gallerySelectSection, cameraInterfaceSection], true);
+        } else {
+          alert("Wrong Credentials!");
+        }
+      }
+    });
+
+    clickHome.addEventListener('click', () => { changeScreen(feedSection, [loginSection, profileSection, storyEditorSection, musicLibrarySection, storyViewerScreen, gallerySelectSection, cameraInterfaceSection], true); stopCamera(); });
+    clickProfile.addEventListener('click', () => { changeScreen(profileSection, [loginSection, feedSection, storyEditorSection, musicLibrarySection, storyViewerScreen, gallerySelectSection, cameraInterfaceSection], true); stopCamera(); });
+    logoutTriggerBtn.addEventListener('click', () => { changeScreen(loginSection, [feedSection, profileSection, storyEditorSection, musicLibrarySection, storyViewerScreen, gallerySelectSection, cameraInterfaceSection], false); stopCamera(); });
+
+    // --- लाइव कैमरा लॉजिक ---
+    const videoElement = document.getElementById('camera-video-viewfinder');
+    const galleryCameraTriggerBtn = document.getElementById('gallery-camera-trigger-btn');
+    const closeCameraInterfaceBtn = document.getElementById('close-camera-interface-btn');
+    const capturePhotoShutterBtn = document.getElementById('capture-photo-shutter-btn');
+    const toggleCameraFacingBtn = document.getElementById('toggle-camera-facing-btn');
+
+    async function startCamera() {
+      if (cameraStream) stopCamera();
+      
+      const constraints = {
+        video: {
+          facingMode: currentFacingMode,
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        },
+        audio: false
+      };
+
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+        videoElement.srcObject = cameraStream;
+        
+        // फ्रंट कैमरे में मिरर इफ़ेक्ट (Mirror Effect) होना चाहिए, बैक कैमरे में नहीं।
+        if (currentFacingMode === "user") {
+          videoElement.style.transform = "scaleX(-1)";
+        } else {
+          videoElement.style.transform = "none";
+        }
+      } catch (error) {
+        console.error("Camera error: ", error);
+        alert("कैमरा एक्सेस करने में समस्या आई। कृपया सुनिश्चित करें कि आप इसे HTTPS या लोकलहोस्ट पर चला रहे हैं और कैमरे की अनुमति दी हुई है।");
+      }
+    }
+
+    function stopCamera() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+        videoElement.srcObject = null;
+      }
+    }
+
+    // कैमरा आइकॉन क्लिक करते ही अब सीधे मेन (बैक) कैमरा ऑन होगा
+    galleryCameraTriggerBtn.addEventListener('click', () => {
+      currentFacingMode = "environment"; // सुनिश्चित करें कि पहले बैक कैमरा ही खुले
+      changeScreen(cameraInterfaceSection, [gallerySelectSection, feedSection], false);
+      startCamera();
+    });
+
+    closeCameraInterfaceBtn.addEventListener('click', () => {
+      stopCamera();
+      changeScreen(gallerySelectSection, [cameraInterfaceSection], false);
+    });
+
+    // कैमरा बदलने (Flip) का लॉजिक (बैक से फ्रंट और फ्रंट से बैक)
+    toggleCameraFacingBtn.addEventListener('click', () => {
+      currentFacingMode = (currentFacingMode === "user") ? "environment" : "user";
+      startCamera();
+    });
+
+    // शटर बटन पर क्लिक करके फ़ोटो कैप्चर करना
+    capturePhotoShutterBtn.addEventListener('click', () => {
+      if (!cameraStream) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = videoElement.videoWidth || 1280;
+      canvas.height = videoElement.videoHeight || 720;
+      const ctx = canvas.getContext('2d');
+      
+      if (currentFacingMode === "user") {
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+      }
+      
+      ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg');
+      
+      stopCamera();
+      loadGalleryImage(dataUrl);
+    });
+
+    // --- गैलरी और एडिटर इवेंट्स ---
+    const yourStoryClickable = document.getElementById('your-story-clickable');
+    const storyFileInput = document.getElementById('story-file-input');
+    const yourStoryImg = document.getElementById('your-story-img');
+    const storyRing = yourStoryClickable.querySelector('.story-ring');
+    const editorPreviewImg = document.getElementById('editor-preview-img');
+    const closeEditorBtn = document.getElementById('close-editor-btn');
+    const publishStoryTrigger = document.getElementById('publish-story-trigger');
+    const fullScreenStoryImage = document.getElementById('full-screen-story-image');
+    const storyBgAudio = document.getElementById('story-bg-audio');
+    const storySkipTrigger = document.getElementById('story-skip-trigger');
+    const closeGalleryView = document.getElementById('close-gallery-view');
+
+    yourStoryClickable.addEventListener('click', () => {
+      if (!window.isDblClicking) {
+        setTimeout(() => {
+          if (!window.isDblClicking) { changeScreen(gallerySelectSection, [feedSection, profileSection], false); }
+        }, 200);
+      }
+    });
+
+    clickCreate.addEventListener('click', () => { changeScreen(gallerySelectSection, [feedSection, profileSection], false); });
+    closeGalleryView.addEventListener('click', () => { changeScreen(feedSection, [gallerySelectSection], true); });
+
+    function triggerDeviceStorage() { storyFileInput.click(); }
+
+    function loadGalleryImage(url) {
+      currentStoryDataUrl = url;
+      editorPreviewImg.src = url;
+      changeScreen(storyEditorSection, [gallerySelectSection, cameraInterfaceSection, feedSection], false);
+    }
+
+    storyFileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) { loadGalleryImage(e.target.result); };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    closeEditorBtn.addEventListener('click', () => { changeScreen(gallerySelectSection, [storyEditorSection], false); });
+
+    publishStoryTrigger.addEventListener('click', () => {
+      yourStoryImg.src = currentStoryDataUrl;
+      hasUploadedStory = true;
+      storyRing.classList.add('active-story');
+      changeScreen(feedSection, [storyEditorSection, gallerySelectSection, cameraInterfaceSection], true);
+    });
+
+    yourStoryClickable.addEventListener('dblclick', () => {
+      window.isDblClicking = true;
+      if (hasUploadedStory) {
+        fullScreenStoryImage.src = currentStoryDataUrl;
+        storyViewerScreen.classList.remove('hidden'); appNavigation.classList.add('hidden');
+      }
+      setTimeout(() => { window.isDblClicking = false; }, 300);
+    });
+
+    storySkipTrigger.addEventListener('click', () => {
+      storyViewerScreen.classList.add('hidden'); appNavigation.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
